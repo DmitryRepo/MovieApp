@@ -5,10 +5,12 @@ export default class MoviedbApi {
 
   async getResponseApi(keyward) {
     const request = await fetch(
-      `${
-        this._url
-      }/search/movie?api_key=${KEY_API}&query=${keyward}&per_page=${1}`
+      `${this._url}/search/movie?api_key=${KEY_API}&query=${keyward}&per_page=${1}`
     );
+    if (!request.ok) {
+      throw new Error(`Could not fetch ${this._url}` +
+        `, received ${request.status}`)
+    }
     const response = await request.json().then((body) => body.results);
     const results = await response;
     return results;

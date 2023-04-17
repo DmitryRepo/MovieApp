@@ -16,14 +16,14 @@ export default class MovieCard extends Component {
       <div className="movie-card" key={id}>
         <Image src={posterPath} style={{float:"left", width:180, height:280}}/>
         <div className="movie-card__content">
-          <h2 style={{ marginTop: 10, fontSize: 18, textAlign: 'left', paddingRight: 50 }}>{title}</h2>
+          <h2 style={{ marginTop: 10, fontSize: 16, textAlign: 'left', paddingRight: 50 }}>{title}</h2>
           <p style={{ fontSize: 12, textAlign: 'left', color: '#827E7E', marginTop: 5, marginBottom: 5 }}>
           {release_date}</p>
           <div className="movie-card__rating-ring">{vote_average}</div>
           <div className="movie-card__tags">Tags</div>
-          <p style={{ fontSize: 12, textAlign: 'left' }}>{this._textFormat.truncate(overview,200)}</p>
+          <p style={{ fontSize: 12, textAlign: 'left' }}>{this._textFormat.truncate(overview,70)}</p>
           <div className="movie-card__stars">
-            <Rate count="10" onChange={() => {}}/>
+            <Rate count={10} style={{ fontSize: 12, marginTop: 'auto' }} onChange={() => {}}/>
           </div>  
         </div>  
       </div>
