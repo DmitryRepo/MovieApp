@@ -3,13 +3,15 @@ import { Input } from "antd";
 import Switcher from "../switcher/switcher";
 import MoviesList from "../movies-list/movies-list";
 import RatedList from "../rated-list/rated-list";
-
+import MoviedbApi from "../../services/moviedb-api";
 import GenresContext from '../context/genres-context';
 
 import "./app.css";
 export default class App extends Component {
 
   static contextType = GenresContext;
+
+  moviesService = new MoviedbApi ();
 
   state = {
     keyward: " ",

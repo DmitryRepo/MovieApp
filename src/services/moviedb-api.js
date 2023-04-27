@@ -90,7 +90,6 @@ export default class MoviedbApi {
       `https://api.themoviedb.org/3/guest_session/${guestSessoinId}/rated/movies?api_key=${this.KEY_API}&language=en-US&sort_by=created_at.asc&page=${page}`
     );
       const response = await request.json();
-      console.log(response)
       this.totalResults = response.total_results;
       const data = await response.results.map((item) =>
         this.transformMovie(item)
