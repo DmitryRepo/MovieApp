@@ -61,7 +61,7 @@ export default class RatedList extends Component {
       ));
     } else {
       return (
-        <div style={{ marginTop: "20%" }}>
+        <div style={{ marginTop: "0%" }}>
           <EmptyCard description="No rated movie yet" />
         </div>
       );
@@ -70,22 +70,24 @@ export default class RatedList extends Component {
 
   render() {
     const { moviesData, currentPage, totalResults } = this.state;
-
+  
     if (!moviesData) return <Spinner />;
-    
+    const pagination = moviesData.length>0 ?
+        <Pagination
+          defaultPageSize="20"
+          size="small"
+          current={currentPage}
+          onChange={this.onChangePage}
+          total={totalResults}
+          onShowSizeChange={this.onShowSizeChange}
+        /> : null
+      
     return (
       <Row>
         <div className="rated-list">
           {this.renderPage()}
-        </div>  
-          <Pagination
-            defaultPageSize="20"
-            size="small"
-            current={currentPage}
-            onChange={this.onChangePage}
-            total={totalResults}
-            onShowSizeChange={this.onShowSizeChange}
-          />         
+        </div>
+        {pagination}
       </Row>
     );
   }

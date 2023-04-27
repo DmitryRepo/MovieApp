@@ -4,7 +4,8 @@ import MoviedbApi from "../../services/moviedb-api";
 import AlertCard from '../alert-card/alert-card'
 import Spinner from "../spinner/spinner";
 import ErrorMessage from "../error-message/error-message";
-import { Pagination, Empty, Row } from 'antd';
+import EmptyCard from "../empty-card/empty-card";
+import { Pagination, Row } from 'antd';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -94,8 +95,8 @@ export default class MoviesList extends Component {
     const { movies, currentPage, totalResults, greeting, notFound, loading, error} = this.state;
     const { loader } = this.props
     if (loader && greeting) return <Spinner/>
-    if (greeting) return <Empty description="Type to find a movie" />;
-    if (notFound) return <Empty description="We havn't fount this movie" />;
+    if (greeting) return <EmptyCard description="Type to find a movie" />;
+    if (notFound) return <EmptyCard description="We havn't fount this movie" />;
     const listMovies = error ? <ErrorMessage /> : this.createMoviesList(); 
     return (
       <Row >
