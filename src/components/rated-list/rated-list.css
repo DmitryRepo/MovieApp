@@ -12,3 +12,7 @@
 .ant-pagination{
     margin: 1rem auto;
 }
+
+.ant-row{
+    flex-direction: column;
+}
