@@ -1,10 +1,9 @@
-import React from 'react';
-import MoviedbApi from '../../services/moviedb-api'
-
+import React from "react";
+import MoviedbApi from "../../services/moviedb-api";
 
 async function genresContext() {
-  const api = new MoviedbApi();
-  const genres = await api.getGengers();
+  const ms = new MoviedbApi();
+  const genres = await ms.getGengers();
   return genres;
 }
 

@@ -5,27 +5,33 @@ body {
     font-family: sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-      
-      
+    height: auto;
+           
 }
 .app{
     display: flex;
-    width: 63rem;
+    max-width: 63rem;
     margin: 0 auto;
     background: #fff;
     text-align: center;
     flex-direction: column;
+    min-height: 100vh;
+}
 
-}
-.pagination{
-    padding-bottom: 1rem; 
-}
 .input-search{
     max-width: 93.5%; 
     margin: 0 auto;
 }
 
 .ant-spin {
+    background:white;
+    border-radius: 0.4rem;
+    margin: 2rem auto;
+    padding: 2rem 2rem;
+    width: 93%;
+  }
+
+.ant-alert {
     padding: 2rem 2rem;
     background:white;
     border-radius: 0.4rem;
@@ -34,11 +40,7 @@ body {
     width: 93%;
   }
 
-  .ant-alert {
-    padding: 2rem 2rem;
-    background:white;
-    border-radius: 0.4rem;
-    margin: 0 auto;
-    padding: 2rem 2rem;
-    width: 93%;
-  }
+.ant-empty{
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}

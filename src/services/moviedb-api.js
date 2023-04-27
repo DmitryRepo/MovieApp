@@ -1,4 +1,4 @@
-import KEY_API from "../libs/libs.js";
+// import KEY_API from "../libs/libs.js";
 import { format } from "date-fns";
 import TextFormat from "./text-format.js";
 
@@ -7,33 +7,43 @@ export default class MoviedbApi {
 
   _textFormat = new TextFormat();
 
+  KEY_API = 'f616520c820e10cdf5b59969a0010af1'
+
   totalResults = 0;
 
   async getResponseMovies(keyward, page) {
-    if (keyward !== " ") {
-      const request = await fetch(
-        `${this._url}/search/movie?api_key=${KEY_API}&query=${keyward}&per_page=${page}`
-      );
-      if (!request.ok) {
-        throw new Error(
-          `Could not fetch ${this._url}` + `, received ${request.status}`);
+    try {
+      if (keyward !== " ") {
+        const request = await fetch(
+          `${this._url}/search/movie?api_key=${this.KEY_API}&query=${keyward}&page=${page}`
+        );
+        if (!request.ok) {
+          throw new Error(
+            // eslint-disable-next-line no-useless-concat
+            `Could not fetch ${this._url}` + `, received ${request.status}`
+          );
+        }
+        const response = await request.json();
+        this.totalResults = response.total_results;
+        const data = await response.results.map((item) =>
+          this.transformMovie(item)
+        );
+        return data;
+      } else {
+        return [];
       }
-      const response = await request.json();
-      this.totalResults = await response.total_results
-      const data = await response.results.map((item)=> this.transformMovie(item))
-      return data;
-    } else {
-      return []
-    }
-  }
-  async getGengers() {
-    const request = await fetch(
-      `https://api.themoviedb.org/3/genre/movie/list?api_key=${KEY_API}&language=en-US`
-    );
-    const response = await request.json();
-    return response.genres;
+    } catch (error) {}
   }
 
+  async getGengers() {
+    try {
+      const request = await fetch(
+        `https://api.themoviedb.org/3/genre/movie/list?api_key=${this.KEY_API}&language=en-US`
+      );
+      const response = await request.json();
+      return response.genres;
+    } catch (error) {}
+  }
   transformMovie(movie) {
     try {
       return {
@@ -43,12 +53,48 @@ export default class MoviedbApi {
         rated: movie.vote_average,
         date: format(new Date(movie.release_date), `MMMM dd, yyyy`),
         genres: movie.genre_ids,
-        desriptions: this._textFormat.truncate(movie.overview),
+        desriptions: this._textFormat.truncate(movie.overview, 80),
         stars: null,
         rating: movie.rating || null,
       };
-    } catch (error) {
-      return console.log(error);
-    }
+    } catch (error) {}
   }
+
+  async openGuestSession() {
+    const request = await fetch(
+      `https://api.themoviedb.org/3/authentication/guest_session/new?api_key=${this.KEY_API}`
+    );
+    const response = await request.json();
+    return response;
+  }
+
+  async ratedMovie(guestSessoinId, movieId, rating) {
+    const request = await fetch(
+      `https://api.themoviedb.org/3/movie/${movieId}/rating?api_key=${this.KEY_API}&guest_session_id=${guestSessoinId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          value: rating,
+        }),
+      }
+    );
+    const response = await request.json();
+    return response;
+  }
+
+  async getRatedMovies(guestSessoinId, page) {
+    const request = await fetch(
+      `https://api.themoviedb.org/3/guest_session/${guestSessoinId}/rated/movies?api_key=${this.KEY_API}&language=en-US&sort_by=created_at.asc&page=${page}`
+    );
+      const response = await request.json();
+      console.log(response)
+      this.totalResults = response.total_results;
+      const data = await response.results.map((item) =>
+        this.transformMovie(item)
+      );
+      return data;
+    }
 }

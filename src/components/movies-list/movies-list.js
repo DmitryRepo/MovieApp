@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import MovieCard from "../movie-card/movie-card";
 import MoviedbApi from "../../services/moviedb-api";
 import AlertCard from '../alert-card/alert-card'
-import { Pagination, Empty } from 'antd';
+import Spinner from "../spinner/spinner";
+import ErrorMessage from "../error-message/error-message";
+import { Pagination, Empty, Row } from 'antd';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -17,29 +19,33 @@ export default class MoviesList extends Component {
     totalResults: this.moviesdbApi.totalResults,
     greeting: true,
     notFound: false,
+    loading: false,
+    error: false,
   };
 
-  debounceRender = lodash.debounce(() => this.getMoviesApi(), 1000);
+  debounceRender = lodash.debounce(() => this.getMoviesApi(), 400);
 
   componentDidUpdate(prevProps, prevState) {
     const { keyward } = this.props;
     const { currentPage } = this.state;
     if (keyward !== prevProps.keyward) {
+      this.setState({
+        loading: true,
+      })
       return this.debounceRender();
     }
     if (currentPage !== prevState.currentPage) {
-      console.log(currentPage)
       this.getMoviesApi();
     }
-    return false;
-  }
+    return ;
+  };
 
   onChangePage = (page) => {
     this.setState({
       currentPage: page,
+      loading: true,
     });
-    this.getMoviesApi();
-    console.log('click')
+    this.debounceRender();
   };
 
   getMoviesApi() {
@@ -59,41 +65,54 @@ export default class MoviesList extends Component {
           totalResults: this.moviesdbApi.totalResults,
           greeting: false,
           notFound: false,
+          loading: false,
+          error:false,
         });
-      });
-    }
+      }).catch(this.onError);
+  };
    
   createMoviesList() {
     const { movies } = this.state;
+    const { guestSessionId, genresAll } = this.props;
     if (movies) {
-      return movies.map((item) => {
-        if (item) return <MovieCard  key={item.id} moviesData={item} />;
+      return movies.map((item) => {;
+        if (item) return <MovieCard  guestSessionId={guestSessionId} key={item.id} moviesData={item} genresAll={genresAll}  />;
         return <AlertCard key={uuidv4()} />;
       });
     }
     return false;
-  }
+  };
+
+  onError = (error) => {
+    this.setState({
+      error: true,
+      loading: false,
+    });
+  };
 
   render() {
-    const { movies, currentPage, totalResults,greeting, notFound } = this.state;
+    const { movies, currentPage, totalResults, greeting, notFound, loading, error} = this.state;
+    const { loader } = this.props
+    if (loader && greeting) return <Spinner/>
     if (greeting) return <Empty description="Type to find a movie" />;
     if (notFound) return <Empty description="We havn't fount this movie" />;
-    console.log(this.state)
+    const listMovies = error ? <ErrorMessage /> : this.createMoviesList(); 
     return (
-      <div className="movies-list">
-        {this.createMoviesList()}
-        {movies.length !== 0 && (
+      <Row >
+        <div className="movies-list">
+          {loading && !error ? <Spinner />: listMovies}
+          {movies.length !== 0 && !error && !loading && (
           <Pagination
             style={{ padding: '20px', width: '100%', display: 'flex', justifyContent: 'center' }}
             defaultPageSize="20"
-            size="middle"
+            size="small"
             current={currentPage}
             onChange={this.onChangePage}
-            total={totalResults}
-          />
-        )}      
-      </div>
+            total={totalResults}/>
+          )}      
+        </div>
+      </Row>  
     );
-  }
+  };
 }
 

@@ -8,13 +8,15 @@ export default class Switcher extends Component {
   };
   render() {
     const { tabs } = this.state;
+    const { switchPage } = this.props
     return (
       <div className="switcher">
         <Tabs
           defaultActiveKey="1"
           centered
+          onChange={(item) => switchPage(item)}
           items={tabs.map((item, i) => {
-            const id = String(i + 1);
+            const id = String(i+1);
             return {
               label: item,
               key: id,

@@ -1,4 +1,4 @@
-.movies-list {
+.rated-list {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -7,10 +7,8 @@
     padding-bottom: 2rem;
     background: #ffffff;
     margin: 0 auto;
-    }
- @media (max-width: 560px) {  
-    .movies-list{
-        width: 20rem;
-    }
 }
-    
+
+.ant-pagination{
+    margin: 0 auto;
+}
