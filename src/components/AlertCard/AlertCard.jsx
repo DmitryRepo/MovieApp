@@ -1,7 +1,7 @@
 import React from 'react';
 import { Result } from 'antd';
 import { FrownOutlined } from '@ant-design/icons';
-import './alert-card.css'
+import './AlertCard.css'
 
 const AlertCard = () => (
     <div className="movie-card">

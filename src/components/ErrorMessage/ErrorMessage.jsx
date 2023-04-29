@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert } from "antd";
 
-import "./error-massage.css";
+import "./ErrorMessage.css";
 
 const ErrorMessage = () => {
   return (

@@ -1,0 +1,14 @@
+.ant-tabs-tab.ant-tabs-tab {
+  font-family: "Inter Regular";
+  font-size: 14px;
+}
+.ant-tabs-nav-list {
+  margin-top: 0.5rem;
+}
+.ant-tabs-top > .ant-tabs-nav::before {
+  width: 8rem;
+  border-bottom: 1px solid #f0f0f0;
+  content: "";
+  margin: 0 auto;
+}
+

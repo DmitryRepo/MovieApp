@@ -1,17 +1,16 @@
 import React, { Component } from "react";
 import { Input } from "antd";
-import Switcher from "../switcher/switcher";
-import MoviesList from "../movies-list/movies-list";
-import RatedList from "../rated-list/rated-list";
-import MoviedbApi from "../../services/moviedb-api";
-import GenresContext from '../context/genres-context';
+import Switcher from "../Switcher/Switcher";
+import MoviesList from "../MoviesList/MoviesList";
+import RatedList from "../RatedList/RatedList";
+import MoviedbApi from "../../services/MoviedbApi";
+import GenresContext from "../context/genresContext";
 
-import "./app.css";
+import "./App.css";
 export default class App extends Component {
-
   static contextType = GenresContext;
 
-  moviesService = new MoviedbApi ();
+  moviesService = new MoviedbApi();
 
   state = {
     keyward: " ",
@@ -21,7 +20,7 @@ export default class App extends Component {
   };
 
   switchPage = (page) => {
-    this.setState({ pageView: page, keyward: '' });
+    this.setState({ pageView: page, keyward: " ", loader: false, });
   };
 
   componentDidMount() {
@@ -35,13 +34,13 @@ export default class App extends Component {
         return this.renderPage();
       });
     }
-    this.getGenres(this.context)
+    this.getGenres(this.context);
     return this.renderPage();
   }
 
-  getGenres(context){
+  getGenres(context) {
     context.then((res) => this.setState({ genresAll: res }));
-  };
+  }
 
   onTextChange = (event) => {
     this.setState({
@@ -61,17 +60,27 @@ export default class App extends Component {
       <>
         <Input
           className="input-search"
-          placeholder="input placeholder"
+          placeholder="Basic usage"
           value={keyward}
           onChange={this.onTextChange}
         />
-        <MoviesList keyward={keyward} loader={loader} guestSessionId = {guestSessionId} genresAll = {genresAll} />
+        <MoviesList
+          keyward={keyward}
+          loader={loader}
+          guestSessionId={guestSessionId}
+          genresAll={genresAll}
+        />
       </>
     );
   }
   render() {
     const { pageView, guestSessionId, genresAll } = this.state;
-    const switcherPage = pageView === "2" ? <RatedList guestSessionId ={guestSessionId} genresAll = {genresAll}/> : this.searchPage();
+    const switcherPage =
+      pageView === "2" ? (
+        <RatedList guestSessionId={guestSessionId} genresAll={genresAll} />
+      ) : (
+        this.searchPage()
+      );
     return (
       <div className="app">
         <Switcher switchPage={this.switchPage} />

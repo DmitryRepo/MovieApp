@@ -1,0 +1,19 @@
+.movies-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  background: #ffffff;
+  margin: 0 auto;
+}
+.ant-select{
+  display:none;
+}
+@media (max-width: 724px) {
+  .movies-list {
+    gap: 0;
+    padding-top: 0rem ;
+  }
+}

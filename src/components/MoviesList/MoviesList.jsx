@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import MovieCard from "../movie-card/movie-card";
-import MoviedbApi from "../../services/moviedb-api";
-import AlertCard from '../alert-card/alert-card'
-import Spinner from "../spinner/spinner";
-import ErrorMessage from "../error-message/error-message";
-import EmptyCard from "../empty-card/empty-card";
-import { Pagination, Row } from 'antd';
+import MovieCard from "../MovieCard/MovieCard";
+import MoviedbApi from "../../services/MoviedbApi";
+import AlertCard from "../AlertCard/AlertCard";
+import Spinner from "../Spinner/Spinner";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import EmptyCard from "../EmptyCard/EmptyCard";
+import { Pagination, Row } from "antd";
 
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
-import "./movie-list.css";
+import "./MovieList.css";
 
-const lodash = require('lodash');
+const lodash = require("lodash");
 export default class MoviesList extends Component {
   moviesdbApi = new MoviedbApi();
 
@@ -32,14 +32,14 @@ export default class MoviesList extends Component {
     if (keyward !== prevProps.keyward) {
       this.setState({
         loading: true,
-      })
+      });
       return this.debounceRender();
     }
     if (currentPage !== prevState.currentPage) {
       this.getMoviesApi();
     }
-    return ;
-  };
+    return;
+  }
 
   onChangePage = (page) => {
     this.setState({
@@ -50,7 +50,7 @@ export default class MoviesList extends Component {
   };
 
   getMoviesApi() {
-    const { currentPage} = this.state;
+    const { currentPage } = this.state;
     const { keyward } = this.props;
     this.moviesdbApi
       .getResponseMovies(keyward, currentPage)
@@ -67,22 +67,31 @@ export default class MoviesList extends Component {
           greeting: false,
           notFound: false,
           loading: false,
-          error:false,
+          error: false,
         });
-      }).catch(this.onError);
-  };
-   
+      })
+      .catch(this.onError);
+  }
+
   createMoviesList() {
     const { movies } = this.state;
     const { guestSessionId, genresAll } = this.props;
     if (movies) {
-      return movies.map((item) => {;
-        if (item) return <MovieCard  guestSessionId={guestSessionId} key={item.id} moviesData={item} genresAll={genresAll}  />;
+      return movies.map((item) => {
+        if (item){          
+          return (
+            <MovieCard
+              guestSessionId={guestSessionId}
+              key={item.id}
+              moviesData={item}
+              genresAll={genresAll}
+            />
+          );}
         return <AlertCard key={uuidv4()} />;
       });
     }
     return false;
-  };
+  }
 
   onError = (error) => {
     this.setState({
@@ -92,28 +101,41 @@ export default class MoviesList extends Component {
   };
 
   render() {
-    const { movies, currentPage, totalResults, greeting, notFound, loading, error} = this.state;
-    const { loader } = this.props
-    if (loader && greeting) return <Spinner/>
+    const {
+      movies,
+      currentPage,
+      totalResults,
+      greeting,
+      notFound,
+      loading,
+      error,
+    } = this.state;
+    const { loader } = this.props;
+    if (loader && greeting) return <Spinner />;
     if (greeting) return <EmptyCard description="Type to find a movie" />;
     if (notFound) return <EmptyCard description="We havn't fount this movie" />;
-    const listMovies = error ? <ErrorMessage /> : this.createMoviesList(); 
+    const listMovies = error ? <ErrorMessage /> : this.createMoviesList();
     return (
-      <Row >
+      <Row>
         <div className="movies-list">
-          {loading && !error ? <Spinner />: listMovies}
+          {loading && !error ? <Spinner /> : listMovies}
           {movies.length !== 0 && !error && !loading && (
-          <Pagination
-            style={{ padding: '20px', width: '100%', display: 'flex', justifyContent: 'center' }}
-            defaultPageSize="20"
-            size="small"
-            current={currentPage}
-            onChange={this.onChangePage}
-            total={totalResults}/>
-          )}      
+            <Pagination
+              style={{
+                padding: "20px",
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+              defaultPageSize="20"
+              size="small"
+              current={currentPage}
+              onChange={this.onChangePage}
+              total={totalResults}
+            />
+          )}
         </div>
-      </Row>  
+      </Row>
     );
-  };
+  }
 }
-

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Row, Pagination } from "antd";
-import MoviedbApi from "../../services/moviedb-api";
-import MovieCard from "../movie-card/movie-card";
-import EmptyCard from "../empty-card/empty-card";
-import Spinner from "../spinner/spinner";
-import "./rated-list.css";
+import MoviedbApi from "../../services/MoviedbApi";
+import MovieCard from "../MovieCard/MovieCard";
+import EmptyCard from "../EmptyCard/EmptyCard";
+import Spinner from "../Spinner/Spinner";
+import "./RatedList.css";
 
 export default class RatedList extends Component {
   moviesService = new MoviedbApi();
@@ -70,9 +70,9 @@ export default class RatedList extends Component {
 
   render() {
     const { moviesData, currentPage, totalResults } = this.state;
-  
     if (!moviesData) return <Spinner />;
-    const pagination = moviesData.length>0 ?
+    const pagination =
+    totalResults >= 20 ? (
         <Pagination
           defaultPageSize="20"
           size="small"
@@ -80,13 +80,12 @@ export default class RatedList extends Component {
           onChange={this.onChangePage}
           total={totalResults}
           onShowSizeChange={this.onShowSizeChange}
-        /> : null
-      
+        />
+      ) : null;
+
     return (
       <Row>
-        <div className="rated-list">
-          {this.renderPage()}
-        </div>
+        <div className="rated-list">{this.renderPage()}</div>
         {pagination}
       </Row>
     );

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./switcher.css";
+import "./Switcher.css";
 import { Tabs } from "antd";
 
 export default class Switcher extends Component {

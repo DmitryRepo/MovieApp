@@ -1,6 +1,6 @@
 // import KEY_API from "../libs/libs.js";
 import { format } from "date-fns";
-import TextFormat from "./text-format.js";
+import TextFormat from "./TextFormat.js";
 
 export default class MoviedbApi {
   _url = "https://api.themoviedb.org/3";
@@ -15,7 +15,7 @@ export default class MoviedbApi {
     try {
       if (keyward !== " ") {
         const request = await fetch(
-          `${this._url}/search/movie?api_key=${this.KEY_API}&query=${keyward}&page=${page}`
+          `${this._url}/search/movie?api_key=${this.KEY_API}&query=${keyward}&per_page=${page}`
         );
         if (!request.ok) {
           throw new Error(

@@ -1,5 +1,5 @@
 import React from "react";
-import MoviedbApi from "../../services/moviedb-api";
+import MoviedbApi from "../../services/MoviedbApi";
 
 async function genresContext() {
   const ms = new MoviedbApi();

@@ -1,12 +1,12 @@
+
 body {
     display: block;
     background: #efefef;
     margin: 0; 
-    font-family: sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    height: auto;
-           
+    height: auto;   
+
 }
 .app{
     display: flex;
@@ -19,17 +19,13 @@ body {
 }
 
 .input-search{
-    max-width: 93.5%; 
+    max-width: 92%; 
     margin: 0 auto;
 }
 
-.ant-spin {
-    background:white;
-    border-radius: 0.4rem;
-    margin: 2rem auto;
-    padding: 2rem 2rem;
-    width: 93%;
-  }
+.ant-row {
+  font-family: "Inter Regular";
+}
 
 .ant-alert {
     padding: 2rem 2rem;
@@ -39,7 +35,3 @@ body {
     padding: 2rem 2rem;
     width: 93%;
   }
-
-.ant-empty{
-  margin-top: 2rem;
-}

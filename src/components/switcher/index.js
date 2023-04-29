@@ -1,3 +1,3 @@
-import Switcher from "./switcher";
+import Switcher from "./Switcher";
 
 export default Switcher;
